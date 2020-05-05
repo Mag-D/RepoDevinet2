@@ -1,0 +1,2 @@
+rootProject.name='Devinet2'
+include ':app'
