@@ -1,9 +1,7 @@
 package com.devinet2.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import com.devinet2.model.Categorie
 import com.devinet2.model.Mot
 
@@ -24,64 +22,15 @@ interface MotDao {
             "ORDER BY length(m.mot), c.nom")
     fun getMotsTries():List<Mot>
 
-
     /**
-     * Fonction qui donne une liste de mot de 4 lettres en tenant compte de la catégorie
+     * Fonction qui donne une liste de mot en fonction de la longueur du mot et de sa catégorie
      */
     @Query ("SELECT * " +
             "FROM mots " +
             "INNER JOIN categories " +
             "ON (mots.categorie = categories.id) " +
-            "WHERE (categories.id = :cat_id AND length(:mot)=4)")
-    fun getMotNiveau1(cat_id: Long, mot: String):List<Mot>
-
-    /**
-     * Fonction qui donne une liste de mot de 5 lettres en tenant compte de la catégorie
-     */
-    @Query ("SELECT * " +
-            "FROM mots " +
-            "INNER JOIN categories " +
-            "ON (mots.categorie = categories.id) " +
-            "WHERE (categories.id = :cat_id AND length(:mot)=5)")
-    fun getMotNiveau2(cat_id: Long, mot: String):List<Mot>
-
-    /**
-     * Fonction qui donne une liste de mot de 6 lettres en tenant compte de la catégorie
-     */
-    @Query ("SELECT * " +
-            "FROM mots " +
-            "INNER JOIN categories " +
-            "ON (mots.categorie = categories.id) " +
-            "WHERE (categories.id = :cat_id AND length(:mot)=6)")
-    fun getMotNiveau3(cat_id: Long, mot: String):List<Mot>
-
-    /**
-     * Fonction qui donne une liste de mot de 7 lettres en tenant compte de la catégorie
-     */
-    @Query ("SELECT * " +
-            "FROM mots " +
-            "INNER JOIN categories " +
-            "ON (mots.categorie = categories.id) " +
-            "WHERE (categories.id = :cat_id AND length(:mot)=7)")
-    fun getMotNiveau4(cat_id: Long, mot: String):List<Mot>
-
-    /**
-     * Fonction qui donne une liste de mot de 8 lettres en tenant compte de la catégorie
-     */
-    @Query ("SELECT * " +
-            "FROM mots " +
-            "INNER JOIN categories " +
-            "ON (mots.categorie = categories.id) " +
-            "WHERE (categories.id = :cat_id AND length(:mot)=8)")
-    fun getMotNiveau5(cat_id: Long, mot: String):List<Mot>
-
-    /**
-     * Fonction qui permet de proposer un mot
-     */
-    @Query ("UPDATE mots " +
-            "SET proposition = :proposition " +
-            "WHERE mots.id=:mot_id")
-    fun updateProposition(mot_id: Long, proposition:String)
+            "WHERE (categories.id = :cat_id AND length(:mot)=:size)")
+    fun getMotsBySize(size: Long, cat_id: Long, mot: String):List<Mot>
 
     /**
      * Fonction qui réinitialise la proposition via l'id (gomme lors du jeu)
@@ -100,5 +49,22 @@ interface MotDao {
             "WHERE length(mot)=((:i)+3)")
     fun initAllPropositionsByNiveau(i: Long)
 
+    /**
+     * Fonction qui permet d'insérer un objet Mot.
+     */
+    @Insert
+    fun insertMot(mot: Mot)
+
+    /**
+     * Fonction qui permet de modifier un objet Mot.
+     */
+    @Update
+    fun updateMot(mot: Mot)
+
+    /**
+     * Fonction qui permet de supprimer un objet Mot.
+     */
+    @Delete
+    fun deleteMot(mot: Mot)
 
 }

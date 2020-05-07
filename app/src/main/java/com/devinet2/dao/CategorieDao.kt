@@ -1,10 +1,7 @@
 package com.devinet2.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import com.devinet2.model.Categorie
 
 /**
@@ -14,8 +11,6 @@ import com.devinet2.model.Categorie
 @Dao
 interface CategorieDao {
 
-
-
     @Query ("SELECT * FROM categories")
     fun getAllCategories(): List<Categorie>
 
@@ -24,6 +19,9 @@ interface CategorieDao {
 
     @Insert
     fun insertCategorie(categorie: Categorie)
+
+    @Update
+    fun updateCategorie(categorie: Categorie)
 
     @Delete
     fun deleteCategorie(categorie: Categorie)
